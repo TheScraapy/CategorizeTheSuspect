@@ -36,7 +36,11 @@
     <div class="subtitle">
       <div class="title" v-if="age && gender">Results :</div>
       <div v-if="age">Age : {{ age }}</div>
-      <div v-if="gender">Gender : {{ gender }}</div>
+      <div v-if="gender">Gender :
+          {{ gender }}
+        <b-icon icon="gender-female" v-if="gender === 'Female'"></b-icon>
+        <b-icon icon="gender-male" v-else></b-icon>
+      </div>
       <canvas ref="chart" id="chart"></canvas>
     </div>
   </div>
@@ -91,6 +95,7 @@ export default {
             this.alertCustomError('🤕 ' + res.data.Errors[0].Message, loader)
           } else {
             loader.close()
+            this.drawFaceDetect(res.data.images[0].faces[0])
             this.trimData(res.data.images[0].faces[0].attributes)
           }
         } else {
@@ -99,6 +104,16 @@ export default {
       } catch (e) {
         this.alertCustomError('🤕 Could not detect facial features', loader)
       }
+    },
+    drawFaceDetect (data) {
+      this.image = this.$refs.image
+      var context = this.canvas.getContext('2d')
+      context.beginPath()
+      context.rect(data.topLeftX, data.topLeftY, data.width, data.height)
+      context.lineWidth = 3
+      context.strokeStyle = 'blue'
+      context.stroke()
+      this.image = this.canvas.toDataURL('image/png')
     },
     trimData (data) {
       this.age = data.age
