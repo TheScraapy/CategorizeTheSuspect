@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.19.1",
     "buefy": "^0.8.9",
+    "chart.js": "^2.9.3",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^7.6.2",
     "vue": "^2.5.2",
